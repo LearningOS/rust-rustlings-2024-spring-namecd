@@ -6,10 +6,15 @@
 
 
 fn main() {
-    let mut res = 42;
+    let mut res : i32= 42;
     let option = Some(12);
     while let Some(x) = option {
-        res += x;
+        if let Some(res_new) = res.checked_add(x) {
+            res = res_new;
+        }
+        else{
+            break;
+        }
     }
     println!("{}", res);
 }
