@@ -10,7 +10,7 @@
 // directory of this exercise.
 //
 // It can be used to:
-//
+
 // - Building a bundled C library.
 // - Finding a C library on the host system.
 // - Generating a Rust module from a specification.
@@ -34,7 +34,7 @@
 // Execute `rustlings hint tests7` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 fn main() {}
 

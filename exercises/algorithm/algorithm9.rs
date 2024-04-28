@@ -2,7 +2,7 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
+
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,6 +38,23 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.count += 1;
+        if self.count == self.items.len() {
+            self.items.push(value);
+        } else {
+            self.items[self.count] = value;
+        }
+        let mut child_idx = self.count;
+        while self.parent_idx(child_idx) > 0 {
+            let parent_idx = self.parent_idx(child_idx);
+            if (self.comparator)(&self.items[child_idx], &self.items[parent_idx]) {
+                self.items.swap(child_idx, parent_idx);
+                child_idx = parent_idx;
+            } else {
+                break;
+            }
+
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +75,16 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+        let left_child_idx = self.left_child_idx(idx);
+        if left_child_idx == self.count {
+            return left_child_idx;
+        }
+        let right_child_idx = self.right_child_idx(idx);
+        if (self.comparator)(&self.items[left_child_idx], &self.items[right_child_idx]) {
+            left_child_idx
+        } else {
+            right_child_idx
+        }
     }
 }
 
@@ -79,13 +105,29 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default + Clone,
 {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+        let root = self.items[1].clone();
+        self.items.swap(1, self.count);
+        self.count -= 1;
+        let mut parent_idx = 1;
+        while self.children_present(parent_idx) {
+            let smallest_child = self.smallest_child_idx(parent_idx);
+            if (self.comparator)(&self.items[smallest_child], &self.items[parent_idx]) {
+                self.items.swap(smallest_child, parent_idx);
+                parent_idx = smallest_child;
+            } else {
+                break;
+            }
+        }
+        Some(root)
     }
 }
 
